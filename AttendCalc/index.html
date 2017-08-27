@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <div><label>开始日期：</label> <input type="text" id="beginDate" value="" /></div>
+    <div><label>结束日期：</label><input type="text" id="endDate" value="" /></div>
+    <div><label>工号：</label><input type="text" id="empCode" value="" /></div>
+
+    <input type="text" id="result" value="a" />
+    <button id="send">Send</button>
+
+    <script>
+        $("#send").click(GetData);
+
+        function GetParam() {
+            var beginDate = $("#beginDate")[0].value;
+            var endDate = $("#endDate")[0].value;
+            var empCode = $("#empCode")[0].value;
+
+            return "{'beginDate':" + "'" + beginDate + "'" + ",'endDate':" + "'" + endDate + "'" + ",'empCode':" + "'" + empCode + "'}";
+
+        }
+
+        var url = "AttendCalc.asmx/GetAttendHours";
+        function GetData() {
+            $.ajax({
+                "url": url,
+                "cache": false,
+                "contentType": "application/json",
+                "datatype": "application/json",
+                "type": "post",
+                "data": GetParam(),
+                "success": function (data) {
+                    console.log(data.d);
+                    $("#result")[0].value = data.d;
+                },
+                "error": function () {
+                    alert("获取失败");
+                }
+            })
+        }
+    </script>
+</body>
+</html>
