@@ -19,15 +19,11 @@ namespace AttendCalc
     public class AttendCalc : System.Web.Services.WebService
     {
         [WebMethod]
-        public string HelloWorld(string value1)
-        {
-            return value1;
-        }
-
-        [WebMethod]
-        public string GetAttendHours(string beginDate, string endDate, string empCode)
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public void GetAttendHours(string beginDate, string endDate, string empCode)
         {
             string retVal = string.Empty;
+            JavaScriptSerializer js = new JavaScriptSerializer();
 
             Dictionary<string, string> param = new Dictionary<string, string>();
             param.Add("@beginDate", beginDate);
@@ -35,7 +31,17 @@ namespace AttendCalc
             param.Add("@empCode", empCode);
 
             retVal = DBHelper.GetResult(param);
-            return retVal;
+            AttendData data = new AttendData();
+            data.result = retVal;
+
+            Context.Response.Clear();
+            Context.Response.Headers["Content-Type"] = "application/json";
+            Context.Response.Write(js.Serialize(data));
         }
+    }
+
+    public class AttendData
+    {
+        public string result;
     }
 }

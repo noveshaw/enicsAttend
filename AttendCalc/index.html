@@ -10,38 +10,48 @@
     <div><label>结束日期：</label><input type="text" id="endDate" value="" /></div>
     <div><label>工号：</label><input type="text" id="empCode" value="" /></div>
 
-    <input type="text" id="result" value="a" />
+    <input type="text" id="result" />
     <button id="send">Send</button>
 
     <script>
         $("#send").click(GetData);
 
         function GetParam() {
-            var beginDate = $("#beginDate")[0].value;
-            var endDate = $("#endDate")[0].value;
-            var empCode = $("#empCode")[0].value;
+            var beginDate = $("#beginDate").val();
+            var endDate = $("#endDate").val();
+            var empCode = $("#empCode").val();
 
-            return "{'beginDate':" + "'" + beginDate + "'" + ",'endDate':" + "'" + endDate + "'" + ",'empCode':" + "'" + empCode + "'}";
+            return "beginDate=" + beginDate + "&" + "endDate=" + endDate + "&" + "empCode=" + empCode + "&";
 
         }
 
         var url = "AttendCalc.asmx/GetAttendHours";
         function GetData() {
+            //$.ajax({
+            //    "url": url + "?" + GetParam() + "timestamp=" + new Date().getTime(),
+            //    "cache": false,
+            //    "datatype": "json",
+            //    "type": "get",
+            //    "success": function (data) {
+            //        $("#result")[0].value = data.result;
+            //    },
+            //    "error": function () {
+            //        alert("获取失败");
+            //    }
+            //})
             $.ajax({
-                "url": url,
+                "url": url + "?" + GetParam() + "timestamp=" + new Date().getTime(),
                 "cache": false,
-                "contentType": "application/json",
-                "datatype": "application/json",
-                "type": "post",
-                "data": GetParam(),
+                "datatype": "jsonp",
+                "type": "get",
                 "success": function (data) {
-                    console.log(data.d);
-                    $("#result")[0].value = data.d;
+                    $("#result")[0].value = data.result;
                 },
                 "error": function () {
                     alert("获取失败");
                 }
             })
+
         }
     </script>
 </body>

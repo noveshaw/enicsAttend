@@ -32,5 +32,14 @@ namespace AttendCalc.Properties {
                 return ((string)(this["connString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string 设置 {
+            get {
+                return ((string)(this["设置"]));
+            }
+        }
     }
 }
