@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Script.Serialization;
 using System.Web.Script.Services;
+using System.Collections.Specialized;
 
 namespace AttendCalc
 {
@@ -36,6 +37,31 @@ namespace AttendCalc
 
             Context.Response.Clear();
             Context.Response.Headers["Content-Type"] = "application/json";
+            Context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+            Context.Response.Write(js.Serialize(data));
+        }
+
+        //IE8,IE9请求方法
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
+        public void GetAttendHoursByXDR()
+        {
+            string retVal = string.Empty;
+            NameValueCollection queryCol = Context.Request.QueryString;
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            Dictionary<string, string> param = new Dictionary<string, string>();
+            param.Add("@beginDate", HttpUtility.UrlDecode(queryCol["beginDate"]));
+            param.Add("@endDate", HttpUtility.UrlDecode(queryCol["endDate"]));
+            param.Add("@empCode", HttpUtility.UrlDecode(queryCol["empCode"]));
+
+            retVal = DBHelper.GetResult(param);
+            AttendData data = new AttendData();
+            data.result = retVal;
+
+            Context.Response.Clear();
+            Context.Response.Headers["Content-Type"] = "application/json";
+            Context.Response.Headers["Access-Control-Allow-Origin"] = "*";
             Context.Response.Write(js.Serialize(data));
         }
     }

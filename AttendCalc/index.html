@@ -27,18 +27,6 @@
 
         var url = "AttendCalc.asmx/GetAttendHours";
         function GetData() {
-            //$.ajax({
-            //    "url": url + "?" + GetParam() + "timestamp=" + new Date().getTime(),
-            //    "cache": false,
-            //    "datatype": "json",
-            //    "type": "get",
-            //    "success": function (data) {
-            //        $("#result")[0].value = data.result;
-            //    },
-            //    "error": function () {
-            //        alert("获取失败");
-            //    }
-            //})
             $.ajax({
                 "url": url + "?" + GetParam() + "timestamp=" + new Date().getTime(),
                 "cache": false,
@@ -48,7 +36,7 @@
                     $("#result")[0].value = data.result;
                 },
                 "error": function () {
-                    alert("获取失败");
+                    //alert("获取失败");
                 }
             })
 
