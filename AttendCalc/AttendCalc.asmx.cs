@@ -32,9 +32,10 @@ namespace AttendCalc
             param.Add("@empCode", empCode);
 
             retVal = DBHelper.GetResult(param);
-            AttendData data = new AttendData();
-            data.result = retVal;
-
+            AttendData data = new AttendData()
+            {
+                result = retVal
+            };
             Context.Response.Clear();
             Context.Response.Headers["Content-Type"] = "application/json";
             Context.Response.Headers["Access-Control-Allow-Origin"] = "*";
